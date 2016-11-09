@@ -8,6 +8,7 @@ from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
 # Init the server
 port = 8000
+clients = []
 print "Server started on port: " + str(port)
 
 # Graph ids
@@ -18,11 +19,35 @@ state = State(map(lambda x: NodeState(x, LightState.red), graphIds))
 simulatorState = RequestState
 
 def Controller():
+    global clients
     global state
     global simulatorState
 
+    def scrambleState(state):
+        newState = []
+
+        for node in state:
+            ls = LightState.red
+            rand = random.randint(0, 2)
+            
+            if rand == 0:
+                ls = LightState.green
+            elif rand == 1:
+                ls = LightState.orange
+                
+            newState.append(NodeState(node.trafficLight, ls));
+
+        return newState
+
+
     while(True):
-        print 'kaas'
+        
+        state.state = scrambleState(state.state)
+        parsed = state.toJSON().decode('utf-8')
+
+        for client in clients:
+            client.sendMessage(parsed)
+
         time.sleep(3) 
 
 def main():
