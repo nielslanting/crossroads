@@ -2,14 +2,13 @@ from enum import Enum
 import json
 from json import JSONEncoder
 
-# The state of a node
-class RequestNodeState():
+class SimulatorNodeState():
 
     def __init__(self, n, c):
         self.trafficLight = n
         self.count = c
 
-class RequestState():
+class SimulatorState():
     state = []
 
     def __init__(self, s):
