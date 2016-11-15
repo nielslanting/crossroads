@@ -16,6 +16,13 @@ class NodeState():
     def __eq__(self, other):
         return self.trafficLight == other.trafficLight and self.status == other.status
 
+    def __repr__(self):
+        return 'n {}: {}'.format(self.trafficLight, self.status)
+
+    def __cmp__(self, other):
+        if hasattr(other, 'trafficLight'):
+            return self.trafficLight.__cmp__(other.trafficLight)
+
 class State():
     state = []
 

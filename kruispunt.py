@@ -23,7 +23,8 @@ class Kruispunt(object):
         # States
         self.clients = []
         self.controllerState = State(map(lambda x: NodeState(x, LightState.red), graphIds))
-        self.simulatorState = SimulatorState
+        self.simulatorState = State(map(lambda x: SimulatorNodeState(x, 0), graphIds))
+        #self.simulatorState = SimulatorState
 
     def run(self):
 

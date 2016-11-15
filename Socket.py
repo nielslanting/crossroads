@@ -18,10 +18,20 @@ class Socket():
             def as_payload(dct):
                 return RequestState(dct['state'])
 
+            def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
+            def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
+
             def handleMessage(self):
                 print 'received message'
+
+                result = []
                 parsed = json.loads(self.data)
-                simulatorState = SimulatorState(parsed['state'])
+
+                for n in parsed['state']:
+                    result.append(SimulatorNodeState(n['trafficLight'], n['count']))
+                
+                parentSelf.parent.simulatorState.state = result 
+
 
             def handleConnected(self):
                 parentSelf.parent.clients.append(self)

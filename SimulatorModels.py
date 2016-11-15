@@ -8,6 +8,9 @@ class SimulatorNodeState():
         self.trafficLight = n
         self.count = c
 
+    def __repr__(self):
+        return 'n {}: {}'.format(self.trafficLight, self.count)
+
 class SimulatorState():
     state = []
 
