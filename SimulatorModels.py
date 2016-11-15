@@ -14,15 +14,8 @@ class SimulatorState():
     def __init__(self, s):
         self.state = s
     
-    def add(self, i):
-        self.state.append(i)
-
-    def get(self):
-        return self.state
-
-    def get(self, i):
-        return self.state[i]
-
     def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
+        raw = json.dumps(self, default=lambda o: o.__dict__, 
             sort_keys=True, indent=4)
+
+        return unicode(raw, 'utf-8')
