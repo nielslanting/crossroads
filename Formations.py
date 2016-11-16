@@ -57,7 +57,6 @@ class FormationFinder:
             for y in self._formations:
                 if x.node in y.counterNodes:
                     cn.append(y.node)
-            print x
             new.append(Formation(x.node, cn))
         
         self._formations = new
@@ -68,7 +67,7 @@ class FormationFinder:
         subsets = []
         ids = map(lambda x: x.node, weightState)
             
-        print 'ids len: ' + str(len(ids))
+        #print 'ids len: ' + str(len(ids))
         #print 'sub len: ' + str(len(subsets))
         #return list(powerset(ids))
         
@@ -115,16 +114,9 @@ class FormationFinder:
     # Selects the best subset without causing conflicts
     def find_best_formation(self, weightState):
 
-        print 'find best formation called'
-        print 'ws len ' + str(len(weightState))
-
         subsets = self.find_all_subsets(weightState)
 
-        print 'subsets calculated ' + str(len(subsets))
-
         weightedSubsets = self.calculate_subset_weight(subsets, weightState)
-
-        print 'weighted subsets: ' + str(len(weightedSubsets))
 
         for subset in weightedSubsets:
             blocked = []
@@ -143,10 +135,10 @@ class FormationFinder:
 
             if foundBlocked == True: continue
             
-            print 'best match: ' + str(subset.node)
+            #print 'best match: ' + str(subset.node)
             freebies = self.calculate_freebies(weightState, subset.node)
 
-            print 'freebies' + str(freebies)
+            #print 'freebies' + str(freebies)
             return subset.node + freebies
 
         return []
