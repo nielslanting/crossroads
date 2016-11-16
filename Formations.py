@@ -61,8 +61,6 @@ class FormationFinder:
         return sorted(result, reverse=True)
 
     def find_best_formation(self, weightState):
-        print '...'
-
         # Calculate the weights of all posibilities
 
         subsets = self.find_all_subsets(weightState)
@@ -75,12 +73,6 @@ class FormationFinder:
                 formation = next((x for x in self._formations if x.node == node), None)
                 blocked = blocked + formation.counterNodes 
                 
-                print 'blocked: '
-                print blocked
-
-                print 'node: '
-                print node
-
             foundBlocked = False
 
             for node in subset.node:
@@ -89,8 +81,6 @@ class FormationFinder:
                     continue
 
             if foundBlocked == True: continue
-
-            print 'WOOT'
 
             return subset.node
 

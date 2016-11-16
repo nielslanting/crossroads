@@ -20,7 +20,6 @@ class TestFormations(unittest.TestCase):
         formationFinder = FormationFinder()
         result = formationFinder.find_best_formation(weightStates)
 
-        print 'result1: ' + str(result)
         self.assertEqual(result, [1, 2])
 
     def test_formation_finder_find_best_formation_2(self):
@@ -28,7 +27,6 @@ class TestFormations(unittest.TestCase):
         formationFinder = FormationFinder()
         result = formationFinder.find_best_formation(weightStates)
 
-        print 'result2: ' + str(result)
         self.assertEqual(result, [3])
 
     def test_formation_finder_find_best_formation_3(self):
@@ -36,7 +34,6 @@ class TestFormations(unittest.TestCase):
         formationFinder = FormationFinder()
         result = formationFinder.find_best_formation(weightStates)
 
-        print 'result3: ' + str(result)
         self.assertEqual(result, [1, 2])
     
     def test_formation_finder_find_all_subsets(self):
