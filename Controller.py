@@ -1,7 +1,5 @@
-import threading
 import time
-import random
-import json
+
 from ControllerModels import LightState, NodeState, State
 from SimulatorModels import SimulatorNodeState, SimulatorState
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
