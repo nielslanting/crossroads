@@ -2,6 +2,9 @@ import json
 from SimulatorModels import SimulatorNodeState
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
+# TODO: Duplicate declaration fix pls
+graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45];
+
 class Socket():
 
     def __init__(self, sState, cState):
@@ -28,8 +31,18 @@ class Socket():
                 result = []
                 parsed = json.loads(self.data)
 
+                #print 'received: '
+                #print parsed
+                
+                ids = []
                 for n in parsed['state']:
+                    ids.append(n['trafficLight'])
                     result.append(SimulatorNodeState(n['trafficLight'], n['count']))
+
+                # Fix unspecified trafficLight Nodes
+                for n in graphIds:
+                    if n not in ids:
+                        result.append(SimulatorNodeState(n, 0))
                 
                 root.simulatorState.set(result)
 

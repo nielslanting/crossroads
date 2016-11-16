@@ -42,7 +42,16 @@
   {
     //console.log(evt.data);
     try {
-      console.log(JSON.parse(evt.data));
+      var data = JSON.parse(evt.data);
+      console.log(data.state);
+
+      console.log('green:');
+
+      for(var i = 0; i < data.state.length; i++){
+        if(data.state[i].status === 'green')
+          console.log(data.state[i].trafficLight);
+      }
+      
     }
     catch(e) {  }
 
