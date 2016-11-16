@@ -11,9 +11,10 @@ class Socket():
         cState.subscribe(self.controller_update)
 
     def controller_update(self, o):
-        parsed = o.toJSON().decode('utf-8')
+        message = o.toJSON()
+
         for client in self.clients:
-            client.sendMessage(parsed)
+            client.sendMessage(message)
 
     def run(self):
         root = self
