@@ -4,7 +4,7 @@ from json import JSONEncoder
 
 class LightState(Enum):
     red = 'red'
-    orange = 'organge'
+    orange = 'orange'
     green = 'green'
 
 class NodeState():
