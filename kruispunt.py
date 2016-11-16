@@ -10,33 +10,33 @@ from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 from Controller import Controller
 from Socket import Socket
 
-# The IDS of all graphs
+# The state of the application
 graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45];
 
 class Kruispunt(object):
     
     def __init__(self):
 
+        self.controllerState = State(map(lambda x: NodeState(x, LightState.red), graphIds))
+        self.simulatorState = SimulatorState(map(lambda x: SimulatorNodeState(x, 0), graphIds))
+
         # Config
         self.port = 8000
 
         # States
-        self.clients = []
-        self.controllerState = State(map(lambda x: NodeState(x, LightState.red), graphIds))
-        self.simulatorState = State(map(lambda x: SimulatorNodeState(x, 0), graphIds))
-        #self.simulatorState = SimulatorState
+        #self.clients = []
 
     def run(self):
 
         print "Server started on port: " + str(self.port)
 
         # Start the controller thread
-        t = threading.Thread(target = Controller, args=([self]))
+        t = threading.Thread(target = Controller, args=([self.simulatorState, self.controllerState]))
         t.deamon = True
         t.start()
 
         # Start the websocket
-        socket = Socket(self).run()
+        socket = Socket(self.simulatorState, self.controllerState).run()
 
 if __name__ == "__main__":
     Kruispunt().run()

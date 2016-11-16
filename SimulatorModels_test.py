@@ -19,8 +19,8 @@ class TestSimulatorModels(unittest.TestCase):
 
         test = SimulatorState(expected)
 
-        self.assertEqual(test.state, expected)
-        self.assertNotEqual(test.state, unexpected)
+        self.assertEqual(test.get(), expected)
+        self.assertNotEqual(test.get(), unexpected)
 
     def test_simulator_state_to_json_simple(self):
         inputArguments = [1, 2, 3]

@@ -7,38 +7,41 @@ from SimulatorModels import SimulatorNodeState, SimulatorState
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
 class Socket():
-    def __init__(self, parent):
-        self.parent = parent;
-    
+
+    def __init__(self, sState, cState):
+        self.clients = []
+        self.simulatorState = sState
+        self.controllerState = cState
+        cState.subscribe(self.controller_update)
+
+    def controller_update(self, o):
+        parsed = o.toJSON().decode('utf-8')
+        for client in self.clients:
+            client.sendMessage(parsed)
+
     def run(self):
-        parentSelf = self
+        root = self
 
         class SimpleEcho(WebSocket):
 
             def as_payload(dct):
                 return RequestState(dct['state'])
 
-            def _json_object_hook(d): return namedtuple('X', d.keys())(*d.values())
-            def json2obj(data): return json.loads(data, object_hook=_json_object_hook)
-
             def handleMessage(self):
-                print 'received message'
-
                 result = []
                 parsed = json.loads(self.data)
 
                 for n in parsed['state']:
                     result.append(SimulatorNodeState(n['trafficLight'], n['count']))
                 
-                parentSelf.parent.simulatorState.state = result 
-
+                root.simulatorState.set(result)
 
             def handleConnected(self):
-                parentSelf.parent.clients.append(self)
+                root.clients.append(self)
                 print self.address, 'connected'
 
             def handleClose(self):
-                parentSelf.parent.clients.remove(self)
+                root.clients.remove(self)
                 print self.address, 'closed'
 
         server = SimpleWebSocketServer('', 8000, SimpleEcho)
