@@ -5,6 +5,8 @@ from ControllerModels import State, NodeState, LightState
 
 class TestControllerModels(unittest.TestCase):
     
+    # TODO: Test obserable logic
+
     def test_node_state_constructor(self):
         test = NodeState(1, LightState.red)
 
@@ -29,8 +31,8 @@ class TestControllerModels(unittest.TestCase):
         unexpected = [4, 2, 3]
         test = State(expected)
 
-        self.assertEqual(test.state, expected)
-        self.assertNotEqual(test.state, unexpected)
+        self.assertEqual(test.get(), expected)
+        self.assertNotEqual(test.get(), unexpected)
 
     def test_state_equal(self):
         a = State([1, 2, 3])

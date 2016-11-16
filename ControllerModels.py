@@ -62,8 +62,8 @@ class State():
 
     # Equality logic
     def __eq__(self, other):
-        for id, ns in enumerate(self.state):
-            if ns != other.state[id]:
+        for id, ns in enumerate(self.get()):
+            if ns != other.get()[id]:
                 return False
 
         return True
