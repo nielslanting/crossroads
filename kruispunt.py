@@ -16,12 +16,9 @@ class Kruispunt(object):
         self.controllerState = State(map(lambda x: NodeState(x, LightState.red), graphIds))
         self.simulatorState = SimulatorState(map(lambda x: SimulatorNodeState(x, 0), graphIds))
 
-        # Config
-        self.port = 8000
-
     def run(self):
 
-        print "Server started on port: " + str(self.port)
+        print "Server started"
 
         # Start the controller thread
         t = threading.Thread(target = Controller, args=([self.simulatorState, self.controllerState]))

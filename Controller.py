@@ -1,16 +1,15 @@
 import time
 
-from ControllerModels import LightState, NodeState, State
-from SimulatorModels import SimulatorNodeState, SimulatorState
-from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 from WeightState import WeightState, generateWeightState
+from ControllerModels import LightState, NodeState
 
 class Controller:
 
     def __init__(self, sState, cState):
         self.simulatorState = sState
         self.controllerState = cState
-        self.weightState = map(lambda x: WeightState(x.trafficLight, 0), self.simulatorState.get())
+        self.weightState = map(lambda x: 
+            WeightState(x.trafficLight, 0), self.simulatorState.get())
 
         self.run()
 
@@ -40,7 +39,10 @@ class Controller:
     def run(self):
         while(True):
             
-            self.controllerState.set(self.generateState(self.simulatorState.get(), self.weightState))
+            newState = self.generateState(self.simulatorState.get(), 
+                self.weightState)
+
+            self.controllerState.set(newState)
 
             self.weightState = generateWeightState(self.weightState, 
                                         self.controllerState.get(), 
