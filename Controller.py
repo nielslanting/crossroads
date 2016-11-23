@@ -1,24 +1,15 @@
 import time
 import sys
-import os
 
 from WeightState import WeightState, generateWeightState
 from ControllerModels import LightState, NodeState
 from Formations import FormationFinder
-
-class bcolors:
-    HEADER = '\033[95m'
-    OKBLUE = '\033[94m'
-    OKGREEN = '\033[92m'
-    WARNING = '\033[93m'
-    FAIL = '\033[91m'
-    ENDC = '\033[0m'
-    BOLD = '\033[1m'
-    UNDERLINE = '\033[4m'
+from Monitor import Monitor
 
 class Controller:
 
-    def __init__(self, sState, cState):
+    def __init__(self, sState, cState, mon):
+        self.monitor = mon
         self.simulatorState = sState
         self.controllerState = cState
         self.prevControllerState = list(cState.get())
@@ -62,32 +53,21 @@ class Controller:
 
     def run(self):
         while(True):
-            os.system('clear')
-            print 'Traffic light controller by Niels Lanting.'
-            print 'Press CRTL + Shift + \\ to abort the application.'
-            print ' '
             
-            nodeLogs = []
+            self.monitor.clear()
+            self.monitor.printHeader()
 
             self.prevControllerState = list(self.controllerState.get())
 
             newState = self.generateState(self.simulatorState.get(), 
                 self.weightState)
 
-            for n in self.simulatorState.get():
-                cCount = str(n.count).ljust(3)
-
-                if n.count > 0:
-                    cCount = bcolors.OKBLUE + cCount + bcolors.ENDC
-
-                nodeLogs.append('Node ' + str(n.trafficLight).ljust(3) + ' | Cars: ' + cCount)
-
             orangeNewState = []
             for i, n in enumerate(newState):
                 ls = LightState[n.status]
 
                 if self.prevControllerState[i].status == LightState.green.name and n.status == LightState.red.name:
-                    ls = LightState.orange
+                    ls = LightState.red
                 if self.prevControllerState[i].status == LightState.orange.name:
                     ls = LightState.red
 
@@ -96,41 +76,7 @@ class Controller:
 
             self.controllerState.set(orangeNewState)
 
-            for i, n in enumerate(self.controllerState.get()):
-                cStatus = n.status.ljust(7)
-
-                if n.status == LightState.red.name:
-                    cStatus = bcolors.FAIL + cStatus + bcolors.ENDC
-                elif n.status == LightState.orange.name:
-                    cStatus = bcolors.WARNING + cStatus + bcolors.ENDC
-                elif n.status == LightState.green.name:
-                    cStatus = bcolors.OKGREEN + cStatus + bcolors.ENDC
-
-                nodeLogs[i] = nodeLogs[i] + ' | Current State: ' + cStatus
-
-            for i, n in enumerate(self.prevControllerState):
-                
-                cStatus = n.status.ljust(7)
-
-                if n.status == LightState.red.name:
-                    cStatus = bcolors.FAIL + cStatus + bcolors.ENDC
-                elif n.status == LightState.orange.name:
-                    cStatus = bcolors.WARNING + cStatus + bcolors.ENDC
-                elif n.status == LightState.green.name:
-                    cStatus = bcolors.OKGREEN + cStatus + bcolors.ENDC
-
-                nodeLogs[i] = nodeLogs[i] + ' | Last state: ' + cStatus
-
-            for i, n in enumerate(self.weightState):
-                cWeight = str(n.weight).ljust(7)
-
-                if n.weight > 0:
-                    cWeight = bcolors.OKBLUE + cWeight + bcolors.ENDC
-
-                nodeLogs[i] = nodeLogs[i] + ' | Weight: ' + cWeight
-
-            for n in nodeLogs:
-                print n
+            self.monitor.printState(self.simulatorState, self.controllerState, self.prevControllerState, self.weightState);
 
             self.weightState = generateWeightState(self.weightState, 
                                         self.controllerState.get(), 

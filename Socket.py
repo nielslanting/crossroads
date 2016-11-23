@@ -28,8 +28,12 @@ class Socket():
                 return RequestState(dct['state'])
 
             def handleMessage(self):
+                print 'message received'
+                print self.data
                 result = []
                 parsed = json.loads(self.data)
+
+                print 'parsed done'
 
                 #print 'received: '
                 #print parsed
@@ -39,10 +43,14 @@ class Socket():
                     ids.append(n['trafficLight'])
                     result.append(SimulatorNodeState(n['trafficLight'], n['count']))
 
+                print 'get ids and results'
+
                 # Fix unspecified trafficLight Nodes
                 for n in graphIds:
                     if n not in ids:
                         result.append(SimulatorNodeState(n, 0))
+
+                print 'fix unspec nodes'
                 
                 root.simulatorState.set(result)
 

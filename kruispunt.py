@@ -5,6 +5,7 @@ from SimulatorModels import SimulatorNodeState, SimulatorState
 
 from Controller import Controller
 from Socket import Socket
+from Monitor import Monitor
 
 # The state of the application
 graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45];
@@ -21,7 +22,7 @@ class Kruispunt(object):
         print "Server started"
 
         # Start the controller thread
-        t = threading.Thread(target = Controller, args=([self.simulatorState, self.controllerState]))
+        t = threading.Thread(target = Controller, args=([self.simulatorState, self.controllerState, Monitor()]))
         t.deamon = True
         t.start()
 
