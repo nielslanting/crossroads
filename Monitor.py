@@ -23,8 +23,9 @@ class Monitor:
         self.write('Press CRTL + Shift + \\ to abort the application.')
         self.write(' ')
 
-    def printState(self, simulatorState, controllerState, prevControllerState, weightState):
-        nodeLogs = []
+    def _generateSimulatorLogs(self, logs, simulatorState):
+
+        newLogs = list(logs)
 
         for n in simulatorState.get():
             cCount = str(n.count).ljust(3)
@@ -32,7 +33,13 @@ class Monitor:
             if n.count > 0:
                 cCount = bcolors.OKBLUE + cCount + bcolors.ENDC
 
-            nodeLogs.append('Node ' + str(n.trafficLight).ljust(3) + ' | Cars: ' + cCount)
+            newLogs.append('Node ' + str(n.trafficLight).ljust(3) + ' | Cars: ' + cCount)
+
+        return newLogs
+
+    def _generateControllerLogs(self, logs, controllerState):
+
+        newLogs = list(logs)
 
         for i, n in enumerate(controllerState.get()):
             cStatus = n.status.ljust(7)
@@ -44,9 +51,14 @@ class Monitor:
             elif n.status == LightState.green.name:
                 cStatus = bcolors.OKGREEN + cStatus + bcolors.ENDC
 
-            nodeLogs[i] = nodeLogs[i] + ' | Current State: ' + cStatus
+            newLogs[i] = newLogs[i] + ' | Current State: ' + cStatus
 
-        for i, n in enumerate(prevControllerState):
+        return newLogs
+
+    def _generatePreviousLogs(self, logs, previousState):
+        newLogs = list(logs)
+
+        for i, n in enumerate(previousState):
             
             cStatus = n.status.ljust(7)
 
@@ -57,7 +69,12 @@ class Monitor:
             elif n.status == LightState.green.name:
                 cStatus = bcolors.OKGREEN + cStatus + bcolors.ENDC
 
-            nodeLogs[i] = nodeLogs[i] + ' | Last state: ' + cStatus
+            newLogs[i] = newLogs[i] + ' | Last state: ' + cStatus
+
+        return newLogs
+
+    def _generateWeightState(self, logs, weightState):
+        newLogs = list(logs)
 
         for i, n in enumerate(weightState):
             cWeight = str(n.weight).ljust(7)
@@ -65,7 +82,18 @@ class Monitor:
             if n.weight > 0:
                 cWeight = bcolors.OKBLUE + cWeight + bcolors.ENDC
 
-            nodeLogs[i] = nodeLogs[i] + ' | Weight: ' + cWeight
+            newLogs[i] = newLogs[i] + ' | Weight: ' + cWeight
 
+        return newLogs
+
+    def printState(self, sState, cState, pCState, wState):
+        nodeLogs = []
+
+        nodeLogs = self._generateSimulatorLogs(nodeLogs, sState)
+        nodeLogs = self._generateControllerLogs(nodeLogs, cState)
+        nodeLogs = self._generatePreviousLogs(nodeLogs, pCState)
+        nodeLogs = self._generateWeightState(nodeLogs, wState)
+
+        # Write all logs
         for n in nodeLogs:
             self.write(n)
