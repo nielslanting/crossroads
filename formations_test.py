@@ -1,8 +1,8 @@
 import unittest
 import re
 
-from Formations import Formation, FormationFinder
-from WeightState import WeightState
+from formations import Formation, FormationFinder
+from weightstate import WeightState
 
 class TestFormations(unittest.TestCase):
 

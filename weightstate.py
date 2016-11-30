@@ -1,4 +1,4 @@
-from ControllerModels import LightState, NodeState, State
+from controllermodels import LightState, NodeState, State
 
 class WeightState:
     def __init__(self, n, w):
@@ -12,12 +12,6 @@ class WeightState:
     def __repr__(self):
         return 'n {}: {}'.format(self.node, self.weight)
 
-""" Generates a new WeightState 
-:param state: The current WeightState 
-:param cState: The ControllerState 
-:param sState: The SimulatorState 
-:returns: a new WeightState 
-"""
 # Generates a new state
 def generateWeightState(state = [], cState = [], sState = []):
     newState = []

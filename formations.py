@@ -1,6 +1,6 @@
 import itertools
 from itertools import chain, combinations
-from WeightState import WeightState
+from weightstate import WeightState
 
 # Calculates the power set of a given set
 def powerset(s):

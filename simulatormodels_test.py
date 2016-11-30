@@ -1,7 +1,7 @@
 import unittest
 import re
 
-from SimulatorModels import SimulatorState, SimulatorNodeState
+from simulatormodels import SimulatorState, SimulatorNodeState
 
 class TestSimulatorModels(unittest.TestCase):
 

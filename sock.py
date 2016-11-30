@@ -1,6 +1,7 @@
 import json
-from SimulatorModels import SimulatorNodeState
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
+
+from simulatormodels import SimulatorNodeState
 from config import GRAPHIDS, PORT
 
 class Socket():

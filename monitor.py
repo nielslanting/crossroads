@@ -1,5 +1,5 @@
 import os
-from ControllerModels import LightState, NodeState
+from controllermodels import LightState, NodeState
 
 class bcolors:
     HEADER = '\033[95m'

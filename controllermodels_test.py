@@ -1,7 +1,7 @@
 import unittest
 import re
 
-from ControllerModels import State, NodeState, LightState
+from controllermodels import State, NodeState, LightState
 
 class TestControllerModels(unittest.TestCase):
     

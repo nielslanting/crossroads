@@ -1,10 +1,10 @@
 import time
 import sys
 
-from WeightState import WeightState, generateWeightState
-from ControllerModels import LightState, NodeState
-from Formations import FormationFinder
-from Monitor import Monitor
+from weightstate import WeightState, generateWeightState
+from controllermodels import LightState, NodeState
+from formations import FormationFinder
+from monitor import Monitor
 
 class Controller:
 
