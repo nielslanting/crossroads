@@ -107,8 +107,7 @@ class FormationFinder:
         for f in self._formations:
             if f.node in blocked: continue
             found = [x for x in weightState if x.node == f.node]
-            #if len(found) <= 0 or found[0].weight <= 0: continue
-            if len(found) <= 0: continue
+            if len(found) <= 0 or found[0].weight <= 0: continue
             
             result.append(f.node)
             blocked = blocked + f.counterNodes
@@ -118,29 +117,6 @@ class FormationFinder:
 
     # Selects the best subset without causing conflicts
     def find_best_formation(self, weightState):
-
-
-        combos = [
-            [27, 28],
-            [37, 38],
-            [35, 36],
-            [25, 26],
-            [21, 22],
-            [31, 32]
-        ]
-        
-        for c in combos:
-            print 'looking for ' + str(c[0])
-            print 'looking for ' + str(c[1])
-
-            a = filter(lambda x: x.node == c[0], weightState)
-            b = filter(lambda x: x.node == c[1], weightState)
-
-            if len(a) > 0 and len(b) > 0:
-                if a[0].weight > b[0].weight:
-                    b[0].weight = a[0].weight
-                else:
-                    a[0].weight = b[0].weight
 
         subsets = self.find_all_subsets(weightState)
         weightedSubsets = self.calculate_subset_weight(subsets, weightState)
