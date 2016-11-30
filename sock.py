@@ -12,6 +12,7 @@ class Socket():
         self.controllerState = cState
         cState.subscribe(self.controller_update)
 
+    # Send WS message to all clients when the controller state changes
     def controller_update(self, state):
         message = state.toJSON()
 

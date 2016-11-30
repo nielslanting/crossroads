@@ -31,7 +31,7 @@ class Controller:
             if state[i]:
                 total = total + state[i].count
 
-            if (n.node == 42 or n.node == 45) and n.weight > 0:
+            if (n.node >= 40) and n.weight > 0:
                 total = 9999
 
             ws.append(WeightState(n.node, total))

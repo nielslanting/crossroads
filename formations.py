@@ -92,62 +92,57 @@ class FormationFinder:
         return sorted(result, reverse=True)
 
     # Calculates which trafficLights can also turn green without interference
-    
-    """
     def calculate_freebies(self, weightState, selected):
-        result = []
-        formationFinder = FormationFinder()
-
-        for f in formationFinder._formations:
-            allowed = True
-            for s in selected:
-                if s in f.counterNodes:
-                    allowed = False
-                    continue
-
-            if allowed == True:
-                result.append(f.node)
-
-        return result
-    """
-
-    def calculate_freebies(self, weightState, selected):
-
-        print 'input weightstate'
-        print weightState
-
-        print 'input selected'
-        print selected
 
         result = []
         blocked = []
 
+        # Generate the currently blocked nodes
         for s in selected:
             found = [x for x in self._formations if x.node == s]
             for f in found:
                 blocked = blocked + f.counterNodes
 
-        print 'blocked'
-        print blocked
-
+        # Test new formations
         for f in self._formations:
             if f.node in blocked: continue
             found = [x for x in weightState if x.node == f.node]
-            if len(found) <= 0 or found[0].weight <= 0: continue
+            #if len(found) <= 0 or found[0].weight <= 0: continue
+            if len(found) <= 0: continue
             
             result.append(f.node)
             blocked = blocked + f.counterNodes
-
-        print 'result'
-        print result
-
-        return result
+            
+        # Return unique list
+        return list(set(result))
 
     # Selects the best subset without causing conflicts
     def find_best_formation(self, weightState):
 
-        subsets = self.find_all_subsets(weightState)
 
+        combos = [
+            [27, 28],
+            [37, 38],
+            [35, 36],
+            [25, 26],
+            [21, 22],
+            [31, 32]
+        ]
+        
+        for c in combos:
+            print 'looking for ' + str(c[0])
+            print 'looking for ' + str(c[1])
+
+            a = filter(lambda x: x.node == c[0], weightState)
+            b = filter(lambda x: x.node == c[1], weightState)
+
+            if len(a) > 0 and len(b) > 0:
+                if a[0].weight > b[0].weight:
+                    b[0].weight = a[0].weight
+                else:
+                    a[0].weight = b[0].weight
+
+        subsets = self.find_all_subsets(weightState)
         weightedSubsets = self.calculate_subset_weight(subsets, weightState)
 
         for subset in weightedSubsets:
@@ -169,6 +164,8 @@ class FormationFinder:
             
             freebies = self.calculate_freebies(weightState, subset.node)
 
-            return subset.node + freebies
+            return list(set(subset.node + freebies))
 
         return []
+     
+    

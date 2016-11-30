@@ -5,8 +5,6 @@ from simulatormodels import SimulatorState, SimulatorNodeState
 
 class TestSimulatorModels(unittest.TestCase):
 
-    # TODO: Test obserable logic
-
     def test_simulator_node_state_constructor(self):
         test = SimulatorNodeState(1, 5)
 

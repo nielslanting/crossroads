@@ -5,8 +5,6 @@ from controllermodels import State, NodeState, LightState
 
 class TestControllerModels(unittest.TestCase):
     
-    # TODO: Test obserable logic
-
     def test_node_state_constructor(self):
         test = NodeState(1, LightState.red)
 

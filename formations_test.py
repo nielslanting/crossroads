@@ -34,8 +34,6 @@ class TestFormations(unittest.TestCase):
             print 'node ' + str(f.node) + ' weights ' + str(weight)
     """
     
-    """
-
     def test_formation_finder_find_best_formation_1(self):
         weightStates = [WeightState(1, 1), WeightState(2, 2), WeightState(3, 1)]
         formationFinder = FormationFinder()
@@ -56,8 +54,6 @@ class TestFormations(unittest.TestCase):
         result = formationFinder.find_best_formation(weightStates)
 
         self.assertEqual(result, [1, 2])
-
-    """
 
     def test_formation_calculate_freebies_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]
@@ -130,43 +126,6 @@ class TestFormations(unittest.TestCase):
         
         expected = [WeightState([1, 2], 4), WeightState([1], 2), WeightState([2], 2)]
         self.assertEqual(weightedSubsets, expected)
-
-    """
-    def test_formation_finder_all_conflicting(self):
-        formationFinder = FormationFinder();
-        formations = formationFinder._formations
-
-        new = []
-
-        print ' '
-
-        for x in formations:
-            cn = list(x.counterNodes)
-            for y in formations:
-                if x.node in y.counterNodes:
-                    cn.append(y.node)
-            print x
-            new.append(Formation(x.node, cn))
-        
-        print '---'
-
-        for x in new:
-            print x
-
-        av = []
-        for x in new:
-            cn = []
-            for y in formations:
-                if y.node not in x.counterNodes:
-                    cn.append(y.node)
-            av.append(Formation(x.node, cn))
-
-        print '---'
-
-        for x in av:
-            print x
-    """
-    
 
 if __name__ == '__main__':
     unittest.main(exit=False)
