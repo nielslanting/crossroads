@@ -19,7 +19,7 @@ class Formation:
 
 class FormationFinder:
     _formations = [
-        Formation(1, [3, 7, 42]),
+        Formation(1, [3, 7, 42, 28, 38]),
         Formation(2, [3, 4, 7, 8, 9, 10]),
         Formation(3, [1, 2, 6, 7, 10, 42]),
         Formation(4, [2, 6, 7, 8, 9, 10]),
@@ -45,8 +45,9 @@ class FormationFinder:
         Formation(36, [2, 4, 8, 42]),
         Formation(37, [8, 9, 10]),
         Formation(38, [1, 3, 7]),
-        Formation(42, [1, 3, 4, 8, 9, 10, 71]),
-        Formation(45, [3, 4, 22, 23, 24, 34]),
+        Formation(42, [1, 2, 3, 4, 8, 9, 10, 71]),
+        Formation(45, [3, 4, 5, 9, 22, 23, 24, 34, 32, 33, 46]),
+        Formation(46, [3, 4, 5, 9, 22, 23, 24, 34, 32, 33, 45])
     ]
 
     def __init__(self):

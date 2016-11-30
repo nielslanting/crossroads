@@ -52,34 +52,51 @@ class Controller:
         return sorted(newState)
 
     def run(self):
+
+        period = 0
         while(True):
             
-            self.monitor.clear()
-            self.monitor.printHeader()
+            #self.monitor.clear()
+            #self.monitor.printHeader()
+            self.monitor.write(period)
 
             self.prevControllerState = list(self.controllerState.get())
 
             newState = self.generateState(self.simulatorState.get(), 
                 self.weightState)
 
-            orangeNewState = []
-            for i, n in enumerate(newState):
-                ls = LightState[n.status]
-
-                if self.prevControllerState[i].status == LightState.green.name and n.status == LightState.red.name:
-                    ls = LightState.red
-                if self.prevControllerState[i].status == LightState.orange.name:
-                    ls = LightState.red
-
-                orangeNewState.append(NodeState(n.trafficLight, ls))
-
-
-            self.controllerState.set(orangeNewState)
-
-            self.monitor.printState(self.simulatorState, self.controllerState, self.prevControllerState, self.weightState);
-
             self.weightState = generateWeightState(self.weightState, 
                                         self.controllerState.get(), 
                                         self.simulatorState.get())
-            
-            time.sleep(5) 
+
+            if period == 0:
+                self.controllerState.set(newState)
+                time.sleep(5) 
+
+            elif period == 1:
+                orangeNewState = []
+
+                for i, n in enumerate(self.controllerState.get()):
+                    ls = LightState[n.status]
+
+                    if self.prevControllerState[i].status == LightState.green.name:
+                        ls = LightState.orange
+
+                    orangeNewState.append(NodeState(n.trafficLight, ls))
+                self.controllerState.set(orangeNewState)
+
+                time.sleep(2)
+
+            elif period == 2:
+                period = -1
+                
+                redNewState = []
+                for i, n in enumerate(self.controllerState.get()):
+                    ls = LightState.red
+                    redNewState.append(NodeState(n.trafficLight, ls))
+
+                self.controllerState.set(redNewState)
+                time.sleep(2)
+
+            #self.monitor.printState(self.simulatorState, self.controllerState, self.prevControllerState, self.weightState);
+            period = period + 1

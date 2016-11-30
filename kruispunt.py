@@ -8,7 +8,7 @@ from Socket import Socket
 from Monitor import Monitor
 
 # The state of the application
-graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45];
+graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45, 46];
 
 class Kruispunt(object):
     
