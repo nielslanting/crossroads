@@ -6,16 +6,14 @@ from SimulatorModels import SimulatorNodeState, SimulatorState
 from Controller import Controller
 from Socket import Socket
 from Monitor import Monitor
-
-# The state of the application
-graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45, 46];
+from config import GRAPHIDS
 
 class Kruispunt(object):
     
     def __init__(self):
 
-        self.controllerState = State(map(lambda x: NodeState(x, LightState.red), graphIds))
-        self.simulatorState = SimulatorState(map(lambda x: SimulatorNodeState(x, 0), graphIds))
+        self.controllerState = State(map(lambda x: NodeState(x, LightState.red), GRAPHIDS))
+        self.simulatorState = SimulatorState(map(lambda x: SimulatorNodeState(x, 0), GRAPHIDS))
 
     def run(self):
 

@@ -1,9 +1,7 @@
 import json
 from SimulatorModels import SimulatorNodeState
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
-
-# TODO: Duplicate declaration fix pls
-graphIds = range(1, 11) + range(21, 29) + range(31, 39) + [42, 45, 46];
+from config import GRAPHIDS, PORT
 
 class Socket():
 
@@ -28,30 +26,19 @@ class Socket():
                 return RequestState(dct['state'])
 
             def handleMessage(self):
-                print 'message received'
-                print self.data
                 result = []
                 parsed = json.loads(self.data)
 
-                print 'parsed done'
-
-                #print 'received: '
-                #print parsed
-                
                 ids = []
                 for n in parsed['state']:
                     ids.append(n['trafficLight'])
                     result.append(SimulatorNodeState(n['trafficLight'], n['count']))
 
-                print 'get ids and results'
-
                 # Fix unspecified trafficLight Nodes
-                for n in graphIds:
+                for n in GRAPHIDS:
                     if n not in ids:
                         result.append(SimulatorNodeState(n, 0))
 
-                print 'fix unspec nodes'
-                
                 root.simulatorState.set(result)
 
             def handleConnected(self):
@@ -62,5 +49,5 @@ class Socket():
                 root.clients.remove(self)
                 print self.address, 'closed'
 
-        server = SimpleWebSocketServer('', 8000, SimpleEcho)
+        server = SimpleWebSocketServer('', PORT, SimpleEcho)
         server.serveforever()
