@@ -18,7 +18,8 @@ class Kruispunt(object):
     def run(self):
 
         # Start the controller thread
-        t = threading.Thread(target = Controller, args=([self.simulatorState, self.controllerState, Monitor()]))
+        controller = Controller(self.simulatorState, self.controllerState, Monitor())
+        t = threading.Thread(target = controller.run)
         t.deamon = True
         t.start()
 

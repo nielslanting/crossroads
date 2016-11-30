@@ -17,7 +17,7 @@ class Controller:
         self.weightState = map(lambda x: 
             WeightState(x.trafficLight, 0), self.simulatorState.get())
 
-        self.run()
+        #self.run()
 
     # Turns green if the count is higher
     def generateState(self, state, wState):
@@ -56,9 +56,10 @@ class Controller:
         period = 0
         while(True):
             
-            self.monitor.clear()
-            self.monitor.printHeader()
 
+            longClearance = False
+            
+            # Calculate the states
             self.prevControllerState = list(self.controllerState.get())
 
             newState = self.generateState(self.simulatorState.get(), 
@@ -68,10 +69,12 @@ class Controller:
                                         self.controllerState.get(), 
                                         self.simulatorState.get())
 
+            # Green cycle
             if period == 0:
                 self.controllerState.set(newState)
-                time.sleep(5) 
+                longClearance = True
 
+            # Orange cycle
             elif period == 1:
                 orangeNewState = []
 
@@ -84,18 +87,29 @@ class Controller:
                     orangeNewState.append(NodeState(n.trafficLight, ls))
                 self.controllerState.set(orangeNewState)
 
-                time.sleep(2)
-
+            # Redcycle
             elif period == 2:
                 period = -1
-                
+
                 redNewState = []
                 for i, n in enumerate(self.controllerState.get()):
                     ls = LightState.red
+                    if n.trafficLight == 4 or n.trafficLight == 3:
+                        longClearance = True
+
                     redNewState.append(NodeState(n.trafficLight, ls))
 
                 self.controllerState.set(redNewState)
-                time.sleep(2)
 
+            # Show the states on the monitor
+            self.monitor.clear()
+            self.monitor.printHeader()
             self.monitor.printState(self.simulatorState, self.controllerState, self.prevControllerState, self.weightState);
+
+            # Sleep timer
+            time.sleep(2)
+            if longClearance == True: time.sleep(3)
+
+            # Go the the next cycle
             period = period + 1
+
