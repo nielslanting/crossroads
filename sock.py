@@ -12,8 +12,8 @@ class Socket():
         self.controllerState = cState
         cState.subscribe(self.controller_update)
 
-    def controller_update(self, o):
-        message = o.toJSON()
+    def controller_update(self, state):
+        message = state.toJSON()
 
         for client in self.clients:
             client.sendMessage(message)

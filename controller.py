@@ -56,9 +56,8 @@ class Controller:
         period = 0
         while(True):
             
-            #self.monitor.clear()
-            #self.monitor.printHeader()
-            self.monitor.write(period)
+            self.monitor.clear()
+            self.monitor.printHeader()
 
             self.prevControllerState = list(self.controllerState.get())
 
@@ -98,5 +97,5 @@ class Controller:
                 self.controllerState.set(redNewState)
                 time.sleep(2)
 
-            #self.monitor.printState(self.simulatorState, self.controllerState, self.prevControllerState, self.weightState);
+            self.monitor.printState(self.simulatorState, self.controllerState, self.prevControllerState, self.weightState);
             period = period + 1

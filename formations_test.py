@@ -33,6 +33,9 @@ class TestFormations(unittest.TestCase):
 
             print 'node ' + str(f.node) + ' weights ' + str(weight)
     """
+    
+    """
+
     def test_formation_finder_find_best_formation_1(self):
         weightStates = [WeightState(1, 1), WeightState(2, 2), WeightState(3, 1)]
         formationFinder = FormationFinder()
@@ -53,6 +56,53 @@ class TestFormations(unittest.TestCase):
         result = formationFinder.find_best_formation(weightStates)
 
         self.assertEqual(result, [1, 2])
+
+    """
+
+    def test_formation_calculate_freebies_1(self):
+        weightStates = [WeightState(1, 2), WeightState(2, 2)]
+        formationFinder = FormationFinder()
+
+        result = formationFinder.calculate_freebies(weightStates, [1])
+
+        blocked  = []
+        for r in result:
+            found = [x for x in formationFinder._formations if x.node == r][0]
+            blocked = blocked + found.counterNodes
+
+        for r in result:
+            found = [x for x in blocked if x == r]
+            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
+
+    def test_formation_calculate_freebies_2(self):
+        weightStates = [WeightState(1, 2), WeightState(2, 2), WeightState(5, 3)]
+        formationFinder = FormationFinder()
+
+        result = formationFinder.calculate_freebies(weightStates, [1])
+
+        blocked  = []
+        for r in result:
+            found = [x for x in formationFinder._formations if x.node == r][0]
+            blocked = blocked + found.counterNodes
+
+        for r in result:
+            found = [x for x in blocked if x == r]
+            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
+
+    def test_formation_calculate_freebies_3(self):
+        weightStates = [WeightState(1, 2), WeightState(2, 2), WeightState(42, 3)]
+        formationFinder = FormationFinder()
+
+        result = formationFinder.calculate_freebies(weightStates, [1])
+
+        blocked  = []
+        for r in result:
+            found = [x for x in formationFinder._formations if x.node == r][0]
+            blocked = blocked + found.counterNodes
+
+        for r in result:
+            found = [x for x in blocked if x == r]
+            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
 
     def test_formation_finder_find_all_subsets_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]

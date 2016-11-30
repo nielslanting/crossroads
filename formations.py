@@ -68,10 +68,6 @@ class FormationFinder:
         subsets = []
         ids = map(lambda x: x.node, weightState)
             
-        #print 'ids len: ' + str(len(ids))
-        #print 'sub len: ' + str(len(subsets))
-        #return list(powerset(ids))
-        
         maxLen = len(ids) + 1
         if maxLen > 4: maxLen = 4;
 
@@ -95,6 +91,9 @@ class FormationFinder:
 
         return sorted(result, reverse=True)
 
+    # Calculates which trafficLights can also turn green without interference
+    
+    """
     def calculate_freebies(self, weightState, selected):
         result = []
         formationFinder = FormationFinder()
@@ -110,7 +109,39 @@ class FormationFinder:
                 result.append(f.node)
 
         return result
+    """
 
+    def calculate_freebies(self, weightState, selected):
+
+        print 'input weightstate'
+        print weightState
+
+        print 'input selected'
+        print selected
+
+        result = []
+        blocked = []
+
+        for s in selected:
+            found = [x for x in self._formations if x.node == s]
+            for f in found:
+                blocked = blocked + f.counterNodes
+
+        print 'blocked'
+        print blocked
+
+        for f in self._formations:
+            if f.node in blocked: continue
+            found = [x for x in weightState if x.node == f.node]
+            if len(found) <= 0 or found[0].weight <= 0: continue
+            
+            result.append(f.node)
+            blocked = blocked + f.counterNodes
+
+        print 'result'
+        print result
+
+        return result
 
     # Selects the best subset without causing conflicts
     def find_best_formation(self, weightState):
@@ -136,10 +167,8 @@ class FormationFinder:
 
             if foundBlocked == True: continue
             
-            #print 'best match: ' + str(subset.node)
             freebies = self.calculate_freebies(weightState, subset.node)
 
-            #print 'freebies' + str(freebies)
             return subset.node + freebies
 
         return []
