@@ -2,13 +2,6 @@ import itertools
 from itertools import chain, combinations
 from weightstate import WeightState
 
-# Calculates the power set of a given set
-def powerset(s):
-    x = len(s)
-    masks = [1 << i for i in range(x)]
-    for i in range(1 << x):
-        yield [ss for mask, ss in zip(masks, s) if i & mask]
-
 class Formation:
     def __init__(self, n, cn = []):
         self.node = n
@@ -62,8 +55,8 @@ class FormationFinder:
         
         self._formations = new
 
-    # Finds all possible subsets of trafficLights
-    def find_all_subsets(self, weightState):
+    # Finds some possible subsets of trafficLights
+    def find_subsets(self, weightState):
         
         subsets = []
         ids = map(lambda x: x.node, weightState)
@@ -92,7 +85,7 @@ class FormationFinder:
         return sorted(result, reverse=True)
 
     # Calculates which trafficLights can also turn green without interference
-    def calculate_freebies(self, weightState, selected):
+    def calculate_complimentary(self, weightState, selected):
 
         result = []
         blocked = []
@@ -112,13 +105,12 @@ class FormationFinder:
             result.append(f.node)
             blocked = blocked + f.counterNodes
             
-        # Return unique list
         return list(set(result))
 
     # Selects the best subset without causing conflicts
     def find_best_formation(self, weightState):
 
-        subsets = self.find_all_subsets(weightState)
+        subsets = self.find_subsets(weightState)
         weightedSubsets = self.calculate_subset_weight(subsets, weightState)
 
         for subset in weightedSubsets:
@@ -138,10 +130,8 @@ class FormationFinder:
 
             if foundBlocked == True: continue
             
-            freebies = self.calculate_freebies(weightState, subset.node)
+            complimentary = self.calculate_complimentary(weightState, subset.node)
 
-            return list(set(subset.node + freebies))
+            return list(set(subset.node + complimentary))
 
         return []
-     
-    

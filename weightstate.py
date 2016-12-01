@@ -1,4 +1,5 @@
 from controllermodels import LightState, NodeState, State
+from config import COMBINED_WEIGHT_NODES
 
 class WeightState:
     def __init__(self, n, w):
@@ -23,26 +24,12 @@ def generateWeightState(state = [], cState = [], sState = []):
         else:
             newState.append(WeightState(n.node, 0))
 
-
     # Sets weight the same for combined nodes
-    combos = [
-        [27, 28],
-        [37, 38],
-        [35, 36],
-        [25, 26],
-        [21, 22],
-        [31, 32]
-    ]
-    
-    for c in combos:
-        print 'looking for ' + str(c[0])
-        print 'looking for ' + str(c[1])
-
+    for c in COMBINED_WEIGHT_NODES:
         a = filter(lambda x: x.node == c[0], newState)
         b = filter(lambda x: x.node == c[1], newState)
 
         if len(a) > 0 and len(b) > 0:
-            print 'found yay'
             if a[0].weight > b[0].weight:
                 b[0].weight = a[0].weight
             else:

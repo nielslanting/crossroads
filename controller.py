@@ -17,8 +17,6 @@ class Controller:
         self.weightState = map(lambda x: 
             WeightState(x.trafficLight, 0), self.simulatorState.get())
 
-        #self.run()
-
     # Turns green if the count is higher
     def generateState(self, state, wState):
         newState = []
@@ -31,6 +29,7 @@ class Controller:
             if state[i]:
                 total = total + state[i].count
 
+            # Give bus & trains a higher weight
             if (n.node >= 40) and n.weight > 0:
                 total = 9999
 
@@ -51,12 +50,12 @@ class Controller:
 
         return sorted(newState)
 
+    # Main controller logic
     def run(self):
 
         period = 0
         while(True):
             
-
             longClearance = False
             
             # Calculate the states

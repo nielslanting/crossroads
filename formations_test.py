@@ -55,11 +55,11 @@ class TestFormations(unittest.TestCase):
 
         self.assertEqual(result, [1, 2])
 
-    def test_formation_calculate_freebies_1(self):
+    def test_formation_calculate_complimentary_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]
         formationFinder = FormationFinder()
 
-        result = formationFinder.calculate_freebies(weightStates, [1])
+        result = formationFinder.calculate_complimentary(weightStates, [1])
 
         blocked  = []
         for r in result:
@@ -70,11 +70,11 @@ class TestFormations(unittest.TestCase):
             found = [x for x in blocked if x == r]
             if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
 
-    def test_formation_calculate_freebies_2(self):
+    def test_formation_calculate_complimentary_2(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2), WeightState(5, 3)]
         formationFinder = FormationFinder()
 
-        result = formationFinder.calculate_freebies(weightStates, [1])
+        result = formationFinder.calculate_complimentary(weightStates, [1])
 
         blocked  = []
         for r in result:
@@ -85,11 +85,11 @@ class TestFormations(unittest.TestCase):
             found = [x for x in blocked if x == r]
             if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
 
-    def test_formation_calculate_freebies_3(self):
+    def test_formation_calculate_complimentary_3(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2), WeightState(42, 3)]
         formationFinder = FormationFinder()
 
-        result = formationFinder.calculate_freebies(weightStates, [1])
+        result = formationFinder.calculate_complimentary(weightStates, [1])
 
         blocked  = []
         for r in result:
@@ -100,18 +100,18 @@ class TestFormations(unittest.TestCase):
             found = [x for x in blocked if x == r]
             if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
 
-    def test_formation_finder_find_all_subsets_1(self):
+    def test_formation_finder_find_subsets_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]
         formationFinder = FormationFinder()
-        result = formationFinder.find_all_subsets(weightStates)
+        result = formationFinder.find_subsets(weightStates)
         
         expected = [[1], [2], [1, 2]]
         self.assertEqual(result, expected)
 
-    def test_formation_finder_find_all_subsets_1(self):
+    def test_formation_finder_find_subsets_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 20)]
         formationFinder = FormationFinder()
-        result = formationFinder.find_all_subsets(weightStates)
+        result = formationFinder.find_subsets(weightStates)
         
         expected = [[1], [2], [1, 2]]
         self.assertEqual(result, expected)
