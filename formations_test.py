@@ -9,40 +9,23 @@ class TestFormations(unittest.TestCase):
     def test_formation_constructor(self):
         test = Formation(1, [1, 2, 3])
 
-        self.assertEqual(test.node, 1)
-        self.assertNotEqual(test.node, 2)
+        self.assertEqual(test.nodes, [1])
+        self.assertNotEqual(test.nodes, 1)
+        self.assertNotEqual(test.nodes, [2])
+        self.assertNotEqual(test.nodes, 2)
 
         self.assertEqual(test.counterNodes, [1, 2, 3])
         self.assertNotEqual(test.counterNodes, [2, 3, 4])
 
-    """
-    def test_shizzle(self):
-        formationFinder = FormationFinder()
-        #weightStates = [WeightState(1, 1), WeightState(2, 2), WeightState(3, 3)]
-        weightStates = [WeightState(1, 1), WeightState(2, 2)]
-
-        print ' '
-
-        for f in formationFinder._formations:
-            weight = 0
-            for c in f.counterNodes:
-                ws = next((x for x in weightStates if x.node == c), None)
-                if ws is None: continue
-
-                weight = weight + ws.weight
-
-            print 'node ' + str(f.node) + ' weights ' + str(weight)
-    """
-    
     def test_formation_finder_find_best_formation_1(self):
         weightStates = [WeightState(1, 1), WeightState(2, 2), WeightState(3, 1)]
         formationFinder = FormationFinder()
         result = formationFinder.find_best_formation(weightStates)
 
-        self.assertEqual(result, [1, 2])
+        self.assertEqual(sorted(result), ([1, 2]))
 
     def test_formation_finder_find_best_formation_2(self):
-        weightStates = [WeightState(1, 1), WeightState(2, 2), WeightState(3, 3)]
+        weightStates = [WeightState(1, 1), WeightState(2, 2), WeightState(3, 4)]
         formationFinder = FormationFinder()
         result = formationFinder.find_best_formation(weightStates)
 
@@ -53,57 +36,87 @@ class TestFormations(unittest.TestCase):
         formationFinder = FormationFinder()
         result = formationFinder.find_best_formation(weightStates)
 
-        self.assertEqual(result, [1, 2])
+        self.assertEqual(sorted(result), sorted([1, 2]))
+
+    def test_formation_finder_find_best_formation_test_priority_1(self):
+        weightStates = [WeightState(46, 1), WeightState(45, 1)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(result, [45])
+
+    def test_formation_finder_find_best_formation_test_priority_2(self):
+        weightStates = [WeightState(46, 200), WeightState(45, 1)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(result, [45])
+
+    def test_formation_finder_find_best_formation_test_priority_3(self):
+        weightStates = [WeightState(8, 200), WeightState(42, 1)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(result, [42])
+
+    def test_formation_finder_find_best_formation_test_priority_4(self):
+        weightStates = [WeightState(36, 200), WeightState(35, 200), WeightState(42, 1)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(result, [42])
+
+    def test_formation_finder_find_best_formation_test_priority_5(self):
+        weightStates = [WeightState(5, 200), WeightState(42, 1)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(sorted(result), sorted([5, 42]))
+
+    def test_formation_finder_find_best_formation_test_priority_4(self):
+        weightStates = [WeightState(36, 200), WeightState(42, 1)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(result, [42])
+
+    # Helper method to validate a formation
+    def _test_formation(self, formationFinder, formation):
+        blocked  = []
+
+        for r in formation:
+            found = [x for x in formationFinder._formations if r in x.nodes][0]
+            blocked = blocked + found.counterNodes
+
+        for r in formation:
+            found = [x for x in blocked if x == r]
+            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
 
     def test_formation_calculate_complimentary_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]
         formationFinder = FormationFinder()
 
-        result = formationFinder.calculate_complimentary(weightStates, [1])
-
-        blocked  = []
-        for r in result:
-            found = [x for x in formationFinder._formations if x.node == r][0]
-            blocked = blocked + found.counterNodes
-
-        for r in result:
-            found = [x for x in blocked if x == r]
-            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
+        result = formationFinder._calculate_complimentary(weightStates, [1])
+        self._test_formation(formationFinder, result)
 
     def test_formation_calculate_complimentary_2(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2), WeightState(5, 3)]
         formationFinder = FormationFinder()
 
-        result = formationFinder.calculate_complimentary(weightStates, [1])
-
-        blocked  = []
-        for r in result:
-            found = [x for x in formationFinder._formations if x.node == r][0]
-            blocked = blocked + found.counterNodes
-
-        for r in result:
-            found = [x for x in blocked if x == r]
-            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
+        result = formationFinder._calculate_complimentary(weightStates, [1])
+        self._test_formation(formationFinder, result)
 
     def test_formation_calculate_complimentary_3(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2), WeightState(42, 3)]
         formationFinder = FormationFinder()
 
-        result = formationFinder.calculate_complimentary(weightStates, [1])
-
-        blocked  = []
-        for r in result:
-            found = [x for x in formationFinder._formations if x.node == r][0]
-            blocked = blocked + found.counterNodes
-
-        for r in result:
-            found = [x for x in blocked if x == r]
-            if len(found) > 0: self.fail('Overlapping nodes: ' + str(r) + ' for ' + str(found))
+        result = formationFinder._calculate_complimentary(weightStates, [1])
+        self._test_formation(formationFinder, result)
 
     def test_formation_finder_find_subsets_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]
         formationFinder = FormationFinder()
-        result = formationFinder.find_subsets(weightStates)
+        result = formationFinder._find_subsets(weightStates)
         
         expected = [[1], [2], [1, 2]]
         self.assertEqual(result, expected)
@@ -111,21 +124,20 @@ class TestFormations(unittest.TestCase):
     def test_formation_finder_find_subsets_1(self):
         weightStates = [WeightState(1, 2), WeightState(2, 20)]
         formationFinder = FormationFinder()
-        result = formationFinder.find_subsets(weightStates)
+        result = formationFinder._find_subsets(weightStates)
         
         expected = [[1], [2], [1, 2]]
         self.assertEqual(result, expected)
-
 
     def test_formation_finder_calculate_subset_weight(self):
         weightStates = [WeightState(1, 2), WeightState(2, 2)]
         subsets = [[1], [2], [1, 2]]
 
         formationFinder = FormationFinder()
-        weightedSubsets = formationFinder.calculate_subset_weight(subsets, weightStates)
+        weightedSubsets = formationFinder._calculate_subset_weight(subsets, weightStates)
         
-        expected = [WeightState([1, 2], 4), WeightState([1], 2), WeightState([2], 2)]
-        self.assertEqual(weightedSubsets, expected)
+        self.assertEqual(weightedSubsets[0].weight, 4)
+        self.assertEqual(weightedSubsets[0].node, [1, 2])
 
 if __name__ == '__main__':
     unittest.main(exit=False)

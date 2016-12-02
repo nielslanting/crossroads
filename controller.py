@@ -70,7 +70,7 @@ class Controller:
             if period == LightState.green:
                 self.controllerState.set(newState)
                 longClearance = True
-                period = LightState.green
+                period = LightState.orange
 
             elif period == LightState.orange:
                 orangeNewState = []

@@ -2,9 +2,14 @@ from controllermodels import LightState, NodeState, State
 from config import COMBINED_WEIGHT_NODES
 
 class WeightState:
-    def __init__(self, n, w):
-        self.node = n;
-        self.weight = w;
+    def __init__(self, node, weight):
+        self.node = node;
+        self.weight = weight
+
+        # Give priority to bus & trains, the train from east needs to move first
+        if type(node) is not list and weight > 0 and node >= 40:
+            self.weight = 9999
+            if node == 45: self.weight = 99999
 
     def __cmp__(self, other):
         if hasattr(other, 'weight'):
@@ -20,12 +25,7 @@ def generateWeightState(state = [], cState = [], sState = []):
     # Calculates the new weight
     for i, n in enumerate(state):
         if cState[i].status == LightState.red.name and sState[i].count > 0:
-            if cState[i].trafficLight == 45:
-                newState.append(WeightState(n.node, 99999))
-            elif cState[i].trafficLight > 40:
-                newState.append(WeightState(n.node, 9999))
-            else:
-                newState.append(WeightState(n.node, n.weight + 1))
+            newState.append(WeightState(n.node, n.weight + 1))
         else:
             newState.append(WeightState(n.node, 0))
 
