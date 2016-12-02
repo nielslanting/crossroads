@@ -20,8 +20,8 @@ class SimulatorState():
     def get(self):
         return self._state
 
-    def set(self, s):
-        self._state = s
+    def set(self, state):
+        self._state = state
         for callback in self._observers:
             callback(self)
 

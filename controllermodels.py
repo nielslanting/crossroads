@@ -2,6 +2,7 @@ from enum import Enum
 import json
 from json import JSONEncoder
 
+# TODO: Enum to FULL CAPS
 class LightState(Enum):
     red = 'red'
     orange = 'orange'

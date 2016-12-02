@@ -19,6 +19,7 @@ class Socket():
         for client in self.clients:
             client.sendMessage(message)
 
+    # Run the socket
     def run(self):
         root = self
 
@@ -28,9 +29,10 @@ class Socket():
                 return RequestState(dct['state'])
 
             def handleMessage(self):
-                result = []
                 parsed = json.loads(self.data)
 
+                # Generate the simulator state
+                result = []
                 ids = []
                 for n in parsed['state']:
                     ids.append(n['trafficLight'])
@@ -41,15 +43,14 @@ class Socket():
                     if n not in ids:
                         result.append(SimulatorNodeState(n, 0))
 
-                root.simulatorState.set(result)
+                sortedResult = sorted(result, key=lambda x: x.trafficLight)
+                root.simulatorState.set(sortedResult)
 
             def handleConnected(self):
                 root.clients.append(self)
-                print self.address, 'connected'
 
             def handleClose(self):
                 root.clients.remove(self)
-                print self.address, 'closed'
 
         server = SimpleWebSocketServer('', PORT, SimpleEcho)
         server.serveforever()
