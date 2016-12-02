@@ -59,6 +59,9 @@ class FormationFinder:
     def find_subsets(self, weightState):
         
         subsets = []
+
+        #weightedNodes = filter(lambda x: x.weight > 0, weightState)
+        #ids = map(lambda x: x.node, weightedNodes)
         ids = map(lambda x: x.node, weightState)
             
         maxLen = len(ids) + 1

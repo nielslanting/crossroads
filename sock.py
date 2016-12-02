@@ -2,7 +2,7 @@ import json
 from SimpleWebSocketServer import SimpleWebSocketServer, WebSocket
 
 from simulatormodels import SimulatorNodeState
-from config import GRAPHIDS, PORT
+from config import GRAPH_IDS, PORT
 
 class Socket():
 
@@ -37,7 +37,7 @@ class Socket():
                     result.append(SimulatorNodeState(n['trafficLight'], n['count']))
 
                 # Fix unspecified trafficLight Nodes
-                for n in GRAPHIDS:
+                for n in GRAPH_IDS:
                     if n not in ids:
                         result.append(SimulatorNodeState(n, 0))
 
