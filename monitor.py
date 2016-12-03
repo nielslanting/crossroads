@@ -44,11 +44,11 @@ class Monitor:
         for i, n in enumerate(controllerState.get()):
             cStatus = n.status.ljust(7)
 
-            if n.status == LightState.red.name:
+            if n.status == LightState.RED.name:
                 cStatus = bcolors.FAIL + cStatus + bcolors.ENDC
-            elif n.status == LightState.orange.name:
+            elif n.status == LightState.ORANGE.name:
                 cStatus = bcolors.WARNING + cStatus + bcolors.ENDC
-            elif n.status == LightState.green.name:
+            elif n.status == LightState.GREEN.name:
                 cStatus = bcolors.OKGREEN + cStatus + bcolors.ENDC
 
             newLogs[i] = newLogs[i] + ' | Current State: ' + cStatus
@@ -62,11 +62,11 @@ class Monitor:
             
             cStatus = n.status.ljust(7)
 
-            if n.status == LightState.red.name:
+            if n.status == LightState.RED.name:
                 cStatus = bcolors.FAIL + cStatus + bcolors.ENDC
-            elif n.status == LightState.orange.name:
+            elif n.status == LightState.ORANGE.name:
                 cStatus = bcolors.WARNING + cStatus + bcolors.ENDC
-            elif n.status == LightState.green.name:
+            elif n.status == LightState.GREEN.name:
                 cStatus = bcolors.OKGREEN + cStatus + bcolors.ENDC
 
             newLogs[i] = newLogs[i] + ' | Last state: ' + cStatus

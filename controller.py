@@ -38,10 +38,10 @@ class Controller:
 
         # Create the new state
         for trafficLight in sorted(weightState, reverse=True):
-            lightState = LightState.red
+            lightState = LightState.RED
             
             if trafficLight.weight > 0  and trafficLight.node in bestFormation:
-                lightState = LightState.green
+                lightState = LightState.GREEN
 
             newState.append(NodeState(trafficLight.node, lightState));
 
@@ -51,7 +51,7 @@ class Controller:
     # Main controller logic
     def run(self):
 
-        period = LightState.red
+        period = LightState.RED
 
         while(True):
             
@@ -67,29 +67,31 @@ class Controller:
                                         self.controllerState.get(), 
                                         self.simulatorState.get())
 
-            if period == LightState.green:
+            if period == LightState.GREEN:
                 self.controllerState.set(newState)
                 longClearance = True
-                period = LightState.orange
 
-            elif period == LightState.orange:
+            elif period == LightState.ORANGE:
                 orangeNewState = []
 
+                # Turn all lights that were green previous cycle to orange
                 for i, n in enumerate(self.controllerState.get()):
                     ls = LightState[n.status]
 
-                    if self.prevControllerState[i].status == LightState.green.name:
-                        ls = LightState.orange
+                    if self.prevControllerState[i].status == LightState.GREEN.name:
+                        ls = LightState.ORANGE
 
                     orangeNewState.append(NodeState(n.trafficLight, ls))
-                self.controllerState.set(orangeNewState)
-                period = LightState.red
 
-            elif period == LightState.red:
+                self.controllerState.set(orangeNewState)
+
+            elif period == LightState.RED:
 
                 redNewState = []
+
+                # Turn all lights to red
                 for i, n in enumerate(self.controllerState.get()):
-                    ls = LightState.red
+                    ls = LightState.RED
 
                     # Longer lanes require longer clearance time
                     if n.trafficLight == 4 or n.trafficLight == 3:
@@ -98,7 +100,16 @@ class Controller:
                     redNewState.append(NodeState(n.trafficLight, ls))
 
                 self.controllerState.set(redNewState)
-                period = LightState.green
+
+            # Go the the next period
+            if period == LightState.GREEN: 
+                period = LightState.ORANGE
+            elif period == LightState.ORANGE: 
+                period = LightState.RED
+            elif period == LightState.RED: 
+                period = LightState.GREEN
+            else: 
+                period = LIGHTSTATE.RED
 
             # Show the states on the monitor
             self.monitor.clear()
@@ -107,7 +118,6 @@ class Controller:
                 self.prevControllerState, self.weightState);
 
             # Sleep timer
-            # TODO: sleep times to constants
             time.sleep(SLEEP_TIME)
             if longClearance == True: time.sleep(SLEEP_TIME_CLEARANCE)
 

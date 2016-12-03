@@ -27,12 +27,12 @@ class FormationFinder:
         Formation([8], [2, 4, 42]),
         Formation([9], [2, 5, 6, 7, 42]),
         Formation([10], [2, 3, 4, 6, 42]),
-        Formation([21, 22], [1, 2, 3, 6, 10]),
+        Formation([21, 22], [1, 2, 3, 6, 10, 42]),
         Formation([23], [45]),
         Formation([24], [45]),
         Formation([25, 26], [2, 4, 5, 6, 7, 8, 42]),
         Formation([27, 28], [1, 4, 7, 8, 9, 10]),
-        Formation([31, 32], [1, 2, 3, 6, 10,2]),
+        Formation([31, 32], [1, 2, 3, 6, 10, 42]),
         Formation([33], [45]),
         Formation([34], [45]),
         Formation([35, 36], [2, 4, 5, 6, 7, 8, 42]),
@@ -154,9 +154,16 @@ class FormationFinder:
             # The current formation is invalid lets try the next formation
             if impossibleFormation == True: continue
             
+            # Select the formations corresponding the the subset nodes
+            selectedFormations = []
+            for formation in self._formations:
+                for node in subset.node:
+                    if node in formation.nodes:
+                        selectedFormations = selectedFormations + formation.nodes
+                        
             # Turn lights green if they don't interfere and return an unique list
-            complimentary = self._calculate_complimentary(weightState, subset.node)
-            return list(set(subset.node + complimentary))
+            complimentary = self._calculate_complimentary(weightState, selectedFormations)
+            return list(set(selectedFormations + complimentary))
 
         return []
 

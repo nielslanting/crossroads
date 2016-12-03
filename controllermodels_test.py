@@ -6,19 +6,19 @@ from controllermodels import State, NodeState, LightState
 class TestControllerModels(unittest.TestCase):
     
     def test_node_state_constructor(self):
-        test = NodeState(1, LightState.red)
+        test = NodeState(1, LightState.RED)
 
         self.assertEqual(1, test.trafficLight)
         self.assertNotEqual(2, test.trafficLight)
 
-        self.assertEqual(LightState.red.name, test.status)
-        self.assertNotEqual(LightState.orange.name, test.status)
-        self.assertNotEqual(LightState.green.name, test.status)
+        self.assertEqual(LightState.RED.name, test.status)
+        self.assertNotEqual(LightState.ORANGE.name, test.status)
+        self.assertNotEqual(LightState.GREEN.name, test.status)
 
     def test_node_state_equal(self):
-        a = NodeState(1, LightState.red)
-        b = NodeState(1, LightState.red)
-        c = NodeState(2, LightState.orange)
+        a = NodeState(1, LightState.RED)
+        b = NodeState(1, LightState.RED)
+        c = NodeState(2, LightState.ORANGE)
 
         self.assertEqual(a, b)
         self.assertNotEqual(a, c)
@@ -51,7 +51,7 @@ class TestControllerModels(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_state_to_json_advance(self):
-        inputArguments = [NodeState(1, LightState.green)]
+        inputArguments = [NodeState(1, LightState.GREEN)]
 
         test = State(inputArguments)
         result = re.sub("[\s+]", "", test.toJSON())

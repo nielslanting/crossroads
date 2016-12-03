@@ -24,7 +24,7 @@ def generateWeightState(state = [], cState = [], sState = []):
 
     # Calculates the new weight
     for i, n in enumerate(state):
-        if cState[i].status == LightState.red.name and sState[i].count > 0:
+        if cState[i].status == LightState.RED.name and sState[i].count > 0:
             newState.append(WeightState(n.node, n.weight + 1))
         else:
             newState.append(WeightState(n.node, 0))

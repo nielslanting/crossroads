@@ -12,7 +12,7 @@ class Kruispunt(object):
     
     def __init__(self):
 
-        self.controllerState = State(map(lambda x: NodeState(x, LightState.red), GRAPH_IDS))
+        self.controllerState = State(map(lambda x: NodeState(x, LightState.RED), GRAPH_IDS))
         self.simulatorState = SimulatorState(map(lambda x: SimulatorNodeState(x, 0), GRAPH_IDS))
 
     def run(self):

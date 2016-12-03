@@ -38,6 +38,20 @@ class TestFormations(unittest.TestCase):
 
         self.assertEqual(sorted(result), sorted([1, 2]))
 
+    def test_formation_finder_find_best_formation_4(self):
+        weightStates = [WeightState(8, 1), WeightState(9, 1), WeightState(10, 1), WeightState(27, 5)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(sorted(result), sorted([27, 28]))
+
+    def test_formation_finder_find_best_formation_5(self):
+        weightStates = [WeightState(8, 1), WeightState(9, 1), WeightState(10, 1), WeightState(28, 5)]
+        formationFinder = FormationFinder()
+        result = formationFinder.find_best_formation(weightStates)
+
+        self.assertEqual(sorted(result), sorted([27, 28]))
+
     def test_formation_finder_find_best_formation_test_priority_1(self):
         weightStates = [WeightState(46, 1), WeightState(45, 1)]
         formationFinder = FormationFinder()

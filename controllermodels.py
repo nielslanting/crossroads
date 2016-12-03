@@ -2,17 +2,16 @@ from enum import Enum
 import json
 from json import JSONEncoder
 
-# TODO: Enum to FULL CAPS
 class LightState(Enum):
-    red = 'red'
-    orange = 'orange'
-    green = 'green'
+    RED = 'red'
+    ORANGE = 'orange'
+    GREEN = 'green'
 
 class NodeState():
 
-    def __init__(self, n, ls):
-        self.trafficLight = n
-        self.status = ls.name
+    def __init__(self, node, lightState):
+        self.trafficLight = node
+        self.status = lightState.name
 
     def __eq__(self, other):
         return self.trafficLight == other.trafficLight and self.status == other.status
@@ -50,6 +49,7 @@ class State():
     def serialize(self, o):
         res = o.__dict__.copy()
 
+        # Delete internal attributes
         if hasattr(o, '_state') and hasattr(o, '_observers'):
             res['state'] = self.get()
             del res['_observers']
@@ -59,6 +59,12 @@ class State():
 
     def toJSON(self):
         raw = json.dumps(self, indent=4, default=self.serialize)
+
+        # Replaces the enum name by its type
+        # TODO: Remove this hack
+        for lightState in LightState:
+            raw = raw.replace(lightState.name, lightState.value)
+
         return unicode(raw, 'utf-8')
 
     # Equality logic
