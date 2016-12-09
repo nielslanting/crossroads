@@ -1,5 +1,5 @@
 # Crossroad simulation
 ### Made by Niels Lanting
 
-For the state format refrence the discord channel.
-
+Crossroad map with node numberings:
+![Image of trafficligts](http://i.imgur.com/xLbi1QB.png)
