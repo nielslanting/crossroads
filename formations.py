@@ -31,7 +31,7 @@ class FormationFinder:
         Formation([23], [45]),
         Formation([24], [45]),
         Formation([25, 26], [2, 4, 5, 6, 7, 8, 42]),
-        Formation([27, 28], [1, 4, 7, 8, 9, 10]),
+        Formation([27, 28], [1, 3, 7, 8, 9, 10]),
         Formation([31, 32], [1, 2, 3, 6, 10, 42]),
         Formation([33], [45]),
         Formation([34], [45]),
@@ -43,7 +43,6 @@ class FormationFinder:
     ]
 
     # If a node A defines a counter node B, node B should also have A as counter node
-    # TODO: Write test
     def _generate_complete_formation_list(self, formations):
         result = []
 
@@ -79,7 +78,6 @@ class FormationFinder:
         return result
 
     # Calculates which trafficLight subset would benefit the most
-    # TODO: Write test for overlapping nodes
     def _calculate_subset_weight(self, subsets, weightState):
         result = []
 

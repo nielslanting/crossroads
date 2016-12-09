@@ -87,6 +87,13 @@ class Monitor:
         return newLogs
 
     def printState(self, sState, cState, pCState, wState):
+
+        # Write the counts of state
+        self.write('Simulator state count: ' + str(len(sState.get())))
+        self.write('Controller state count: ' + str(len(cState.get())))
+        self.write('Weight state count: ' + str(len(wState))) 
+        self.write('')
+        
         nodeLogs = []
 
         nodeLogs = self._generateSimulatorLogs(nodeLogs, sState)
