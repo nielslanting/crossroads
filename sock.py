@@ -45,7 +45,17 @@ class Socket():
 
                 sortedResult = sorted(result, key=lambda x: x.trafficLight)
                 filteredResult = filter(lambda x: x.trafficLight in GRAPH_IDS, sortedResult)
-                root.simulatorState.set(filteredResult)
+                uniqueResult = list(set(filteredResult))
+                sortedResult = sorted(uniqueResult, key=lambda x: x.trafficLight, reverse=False)
+
+                finalResult = []
+                finalIds = []
+                for r in sortedResult:
+                    if r.trafficLight not in finalIds:
+                        finalResult.append(r)
+                        finalIds.append(r.trafficLight)
+
+                root.simulatorState.set(finalResult)
 
             def handleConnected(self):
                 root.clients.append(self)
